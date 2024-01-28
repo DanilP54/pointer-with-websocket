@@ -1,0 +1,13 @@
+.canvas {
+  height: 100svh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+canvas {
+  border: 2px solid black;
+  background-color: white;
+}
+
+/*# sourceMappingURL=canvas.css.map */
