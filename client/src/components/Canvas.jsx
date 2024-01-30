@@ -7,17 +7,28 @@ import Brush from "../tools/Brush.js";
 import ModalComponents from "./ModalComponents.jsx";
 import {useParams} from "react-router-dom";
 import Rect from "../tools/Rect.js";
+import axios from "axios";
 
 
 const Canvas = observer(() => {
     const canvasRef = useRef()
-
+    const userId = useParams().id
     useEffect(() => {
         canvasState.setCanvas(canvasRef.current)
-        // toolState.setTool(new Rect(canvasRef.current))
+        let ctx = canvasRef.current.getContext('2d')
+        axios.get(`http://localhost:5000/image?id=${userId}`)
+            .then(res => {
+                const img = new Image()
+                img.src = res.data
+                img.onload = () => {
+                    ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
+                    ctx.drawImage(img, 0, 0, canvasRef.current.width, canvasRef.current.height)
+
+                }
+            })
     }, []);
 
-    const userId = useParams().id
+
 
     useEffect(() => {
         if(canvasState.username) {
@@ -67,6 +78,8 @@ const Canvas = observer(() => {
 
     function mouseDownHandler() {
         canvasState.pushToUndo(canvasRef.current.toDataURL())
+        axios.post(`http://localhost:5000/image?id=${userId}`, {img: canvasRef.current.toDataURL()})
+            .then(res => console.log(res.data))
     }
     return (
         <div  className="canvas">

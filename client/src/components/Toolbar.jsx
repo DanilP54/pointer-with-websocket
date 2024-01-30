@@ -17,6 +17,7 @@ const Toolbar = () => {
     }
     const download = () => {
         const dataUrl = canvasState.canvas.toDataURL()
+        console.log(dataUrl)
         const a = document.createElement('a')
         a.href = dataUrl
         a.download = canvasState.sessionId + ".jpg"
